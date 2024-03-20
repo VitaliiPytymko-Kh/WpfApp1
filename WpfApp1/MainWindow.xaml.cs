@@ -25,6 +25,8 @@ namespace WpfApp1
         SqlDataReader reader = null;
         SqlCommand cmd = null;
         string text = null;
+        private DataTable previousQueryResult = null;
+
 
         public MainWindow()
         {
@@ -33,11 +35,13 @@ namespace WpfApp1
             cs = @"Data Source =(localdb)\MSSQLLocalDB; Initial Catalog = Sklad; Integrated Security =SSPI; ";
             conn.ConnectionString = cs;
             conn.Open();
+
         }
         private void ExecuteQueryAndRefreshDataGrid(string query)
         {
             try
             {
+
                 if (reader != null) reader.Close();
 
                 TextBox1.Text = query;
@@ -168,8 +172,7 @@ namespace WpfApp1
         {
             try
             {
-                // Очищаем DataGrid
-                DataGrid1.ItemsSource = null;
+               
 
                 // Получаем текст запроса из TextBox1
                 string query = TextBox1.Text;
@@ -180,6 +183,9 @@ namespace WpfApp1
                     System.Windows.MessageBox.Show("Enter a valid SQL query.");
                     return;
                 }
+
+                // Сохраняем результат предыдущего запроса
+                previousQueryResult = table;
 
                 // Выполняем запрос и обновляем DataGrid
                 ExecuteQueryAndRefreshDataGrid(query);
@@ -251,5 +257,20 @@ namespace WpfApp1
             QueryWindow1 window1 = new();
             window1.ShowDialog();
         }
+
+
+        private void Button_Clear_Click(object sender, RoutedEventArgs e)
+        {
+            // Очищаем поле запроса
+            TextBox1.Clear();
+
+            // Если есть результат предыдущего запроса, отображаем его снова
+            if (previousQueryResult != null)
+            {
+                DataView Source = new DataView(previousQueryResult);
+                DataGrid1.ItemsSource = Source;
+            }
+        }
+
     }
 }
