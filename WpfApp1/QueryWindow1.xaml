@@ -16,8 +16,74 @@
 
             </FlowDocumentReader.Background>
             <FlowDocument>
-                <Paragraph>Отображение всей информации о товаре:
-            "SELECT * FROM Товар"
+                <Paragraph>Отображение всей информации о товаре: SELECT * FROM Товар</Paragraph>
+                <Paragraph>Отображение всех типов товаров: SELECT DISTINCT Тип FROM Товар</Paragraph>
+                <Paragraph>Отображение всех поставщиков: SELECT * FROM Поставщик</Paragraph>
+                <Paragraph>Показать товар с максимальным количеством:
+                    SELECT TOP 1 Товар.Название, SUM(Поставки.Количество) AS Общее_количество
+                    FROM Товар
+                    JOIN Поставки ON Товар.ТоварID = Поставки.ТоварID
+                    GROUP BY Товар.ТоварID, Товар.Название
+                    ORDER BY Общее_количество DESC
+                </Paragraph>
+                <Paragraph>Показать товар с минимальным количеством:
+                    SELECT TOP 1 Товар.Название, SUM(Поставки.Количество) AS Общее_количество
+                    FROM Товар
+                    JOIN Поставки ON Товар.ТоварID = Поставки.ТоварID
+                    GROUP BY Товар.ТоварID, Товар.Название
+                    ORDER BY Общее_количество ASC
+                </Paragraph>
+                <Paragraph>Показать товар с минимальной себестоимостью:
+                     SELECT TOP 1 Товар.Название, MIN(Поставки.Себестоимость) AS Минимальная_себестоимость
+                     FROM Товар
+                     JOIN Поставки ON Товар.ТоварID = Поставки.ТоварID
+                     GROUP BY Товар.ТоварID, Товар.Название
+                     ORDER BY Минимальная_себестоимость ASC
+                </Paragraph>
+                <Paragraph>Показать товар с максимальной себестоимостью:
+                    SELECT TOP 1 Товар.Название, MAX(Поставки.Себестоимость) AS Максимальная_себестоимость
+                    FROM Товар
+                    JOIN Поставки ON Товар.ТоварID = Поставки.ТоварID
+                    GROUP BY Товар.ТоварID, Товар.Название
+                    ORDER BY Максимальная_себестоимость DESC
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
+                </Paragraph>
+                <Paragraph>
                 </Paragraph>
             </FlowDocument>
         </FlowDocumentReader>
