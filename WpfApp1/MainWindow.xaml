@@ -12,7 +12,7 @@
             <ColumnDefinition Width="589*"/>
         </Grid.ColumnDefinitions>
 
-        <DataGrid x:Name="DataGrid1" HorizontalAlignment="Left" Height="218" Margin="50,138,0,0" VerticalAlignment="Top" Width="664" Grid.ColumnSpan="2"/>
+        <DataGrid x:Name="DataGrid1" HorizontalAlignment="Left" Height="218" Margin="50,138,0,0" VerticalAlignment="Top" Width="610" Grid.ColumnSpan="2"/>
         <TextBox x:Name="TextBox1" Grid.Column="1" HorizontalAlignment="Left" Margin="102,57,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="347" Height="68"/>
 
         <TextBlock x:Name ="TextBlock1" Grid.ColumnSpan="2" Margin="180,57,493,357" TextWrapping="Wrap" TextAlignment="Right" >Enter your request</TextBlock >
@@ -28,6 +28,7 @@
         <Button x:Name="Button9" Content="Поставки" HorizontalAlignment="Left" Margin="11,91,0,0" VerticalAlignment="Top" Width="75" Click="Button9_Click" RenderTransformOrigin="0.24,-0.8"/>
         <Button x:Name="Button10" Content="Список запросов" HorizontalAlignment="Left" Margin="456,105,0,0" VerticalAlignment="Top" Width="104" Click="Button10_Click" RenderTransformOrigin="0.24,-0.8" Grid.Column="1"/>
         <Button x:Name="Button_Clear" Content="Очистить" HorizontalAlignment="Left" Margin="456,80,0,0" VerticalAlignment="Top" Width="104" Click="Button_Clear_Click" Grid.Column="1"/>
+        <Button x:Name="Button11" Content="Добавить товар" HorizontalAlignment="Left" Margin="456,138,0,0" VerticalAlignment="Top" Width="104" Click="Button11_Click" RenderTransformOrigin="0.24,-0.8" Grid.Column="1"/>
 
 
     </Grid>

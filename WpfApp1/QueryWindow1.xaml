@@ -47,44 +47,54 @@
                     GROUP BY Товар.ТоварID, Товар.Название
                     ORDER BY Максимальная_себестоимость DESC
                 </Paragraph>
-                <Paragraph>
+                <Paragraph>Показать товары, заданной категории:
+                    SELECT * FROM Товар WHERE Тип = 'Beverages'
+                    / 'Household chemicals' /'Tea'
                 </Paragraph>
-                <Paragraph>
+                <Paragraph>Показать товары, заданного поставщика:
+                    SELECT Товар.*FROM Товар
+                    INNER JOIN Поставки
+                    ON Товар.ТоварID = Поставки.ТоварID
+                    WHERE Поставки.ПоставщикID = (SELECT ПоставщикID FROM Поставщик WHERE Название = 'Cofeeok'/'Eva'/'MyWaterShop')
                 </Paragraph>
-                <Paragraph>
+                <Paragraph>Показать самый старый товар на складе:
+                    SELECT TOP 1 Товар.Название, Товар.Тип, Поставки.Дата_поставки 
+                    FROM Товар INNER JOIN Поставки
+                    ON Товар.ТоварID =Поставки.ТоварID ORDER BY Поставки.Дата_поставки ASC
                 </Paragraph>
-                <Paragraph>
+                <Paragraph>Показать среднее количество товаров по каждому типу товара:
+                    SELECT Товар.Тип, AVG(Поставки.Количество) AS Среднее_количество 
+                    FROM Товар 
+                    JOIN Поставки ON Товар.ТоварID = Поставки.ТоварID 
+                    GROUP BY Товар.Тип
                 </Paragraph>
-                <Paragraph>
+                <Paragraph>Показать информацию о поставщике с наибольшим количеством товаров на складе:
+                    SELECT TOP 1 Поставщик.Название, SUM(Поставки.Количество) AS Общее_количество_товаров 
+                    FROM Поставщик
+                    JOIN Поставки ON Поставщик.ПоставщикID = Поставки.ПоставщикID
+                    GROUP BY Поставщик.Название 
+                    ORDER BY Общее_количество_товаров DESC
                 </Paragraph>
-                <Paragraph>
+                <Paragraph>Показать информацию о поставщике с наименьшим количеством товаров на складе:
+                    SELECT TOP 1 Поставщик.Название, SUM(Поставки.Количество) AS Общее_количество_товаров
+                    FROM Поставщик 
+                    JOIN Поставки ON Поставщик.ПоставщикID = Поставки.ПоставщикID
+                    GROUP BY Поставщик.Название ORDER BY Общее_количество_товаров ASC
                 </Paragraph>
-                <Paragraph>
+                <Paragraph>Показать информацию о типе товаров с наибольшим количеством товаров на складе:
+                    SELECT TOP 1 Товар.Тип, SUM(Поставки.Количество) AS Общее_количество_товаров 
+                    FROM Товар
+                    JOIN Поставки ON Товар.ТоварID = Поставки.ТоварID
+                    GROUP BY Товар.Тип ORDER BY Общее_количество_товаров DESC
                 </Paragraph>
-                <Paragraph>
+                <Paragraph>Показать товары с поставки, которых прошло заданное количество дней:
+                    DECLARE @Количество_дней INT = 3; -- Замените на нужное количество дней
+                    SELECT Товар.*
+                    FROM Товар 
+                    JOIN Поставки ON Товар.ТоварID = Поставки.ТоварID
+                    WHERE Поставки.Дата_поставки >= DATEADD(day, -@Количество_дней, GETDATE())
                 </Paragraph>
-                <Paragraph>
-                </Paragraph>
-                <Paragraph>
-                </Paragraph>
-                <Paragraph>
-                </Paragraph>
-                <Paragraph>
-                </Paragraph>
-                <Paragraph>
-                </Paragraph>
-                <Paragraph>
-                </Paragraph>
-                <Paragraph>
-                </Paragraph>
-                <Paragraph>
-                </Paragraph>
-                <Paragraph>
-                </Paragraph>
-                <Paragraph>
-                </Paragraph>
-                <Paragraph>
-                </Paragraph>
+
             </FlowDocument>
         </FlowDocumentReader>
 

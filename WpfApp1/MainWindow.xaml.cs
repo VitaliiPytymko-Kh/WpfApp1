@@ -272,5 +272,10 @@ namespace WpfApp1
             }
         }
 
+        private void Button11_Click(object sender, RoutedEventArgs e)
+        {
+            AddNewProduct addNewProduct = new AddNewProduct();
+            addNewProduct.ShowDialog();
+        }
     }
 }
