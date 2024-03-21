@@ -15,22 +15,16 @@ using System.Windows.Shapes;
 namespace WpfApp1
 {
     /// <summary>
-    /// Логика взаимодействия для Add_New_Product.xaml
+    /// Логика взаимодействия для AddNewType.xaml
     /// </summary>
-    public partial class AddNewProduct : Window
+    public partial class AddNewType : Window
     {
-        public AddNewProduct()
+        public AddNewType()
         {
             InitializeComponent();
         }
 
-        private void AddNewType_Click(object sender, RoutedEventArgs e)
-        {
-            AddNewType addNewType = new AddNewType();
-            addNewType.ShowDialog();
-        }
-
-        private void AddNewProduct_Click(object sender, RoutedEventArgs e)
+        private void AddType_Click(object sender, RoutedEventArgs e)
         {
 
         }
