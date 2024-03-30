@@ -26,6 +26,7 @@ namespace WpfApp1
         SqlCommand cmd = null;
         string text = null;
         private DataTable previousQueryResult = null;
+        private string currentTableName;
 
 
         public MainWindow()
@@ -41,8 +42,8 @@ namespace WpfApp1
         {
             try
             {
-
-                if (reader != null) reader.Close();
+                if (reader != null)
+                    reader.Close(); // Закрываем DataReader, если он открыт
 
                 TextBox1.Text = query;
 
@@ -59,7 +60,6 @@ namespace WpfApp1
                     {
                         if (line == 0)
                         {
-
                             for (int i = 0; i < reader.FieldCount; i++)
                             {
                                 table.Columns.Add(reader.GetName(i));
@@ -80,9 +80,15 @@ namespace WpfApp1
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                if (reader != null && !reader.IsClosed)
+                    reader.Close(); // Убеждаемся, что DataReader закрыт даже в случае исключения
             }
         }
+
         private void ShowProductWithMaxQuantity()
         {
             try
@@ -197,9 +203,6 @@ namespace WpfApp1
         }
 
 
-
-
-
         private void Button2_Click(object sender, RoutedEventArgs e)
         {
             // Очищаем DataGrid
@@ -210,6 +213,16 @@ namespace WpfApp1
 
             // Отображение всей информации о товаре;
             ExecuteQueryAndRefreshDataGrid("SELECT * FROM Товар");
+
+            currentTableName = "Товар";
+            try
+            {
+                int selectedRowId = GetSelectedRowId(DataGrid1);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
         }
 
 
@@ -224,8 +237,27 @@ namespace WpfApp1
         private void Button4_Click(object sender, RoutedEventArgs e)
         {
             // Отображение всех поставщиков
+            // Очищаем DataGrid
+            DataGrid1.ItemsSource = null;
+
+            // Восстанавливаем текст подсказки в TextBlock1
+            TextBlock1.Text = "Enter your request";
+
+            // Отображение всей информации о товаре;
             ExecuteQueryAndRefreshDataGrid("SELECT * FROM Поставщик");
+
+            currentTableName = "Поставщик";
+            try
+            {
+                int selectedRowId = GetSelectedRowId(DataGrid1);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+          
         }
+           
 
         private void Button5_Click(object sender, RoutedEventArgs e)
         {
@@ -274,8 +306,199 @@ namespace WpfApp1
 
         private void Button11_Click(object sender, RoutedEventArgs e)
         {
-            AddNewProduct addNewProduct = new AddNewProduct();
-            addNewProduct.ShowDialog();
+            try
+            {
+                AddNewProduct addNewProduct = new();
+                addNewProduct.ProductAdded += AddNewProduct_ProductAdded;
+                addNewProduct.ShowDialog();
+                RefreshProductDataGrid();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error adding new product:" + ex.Message);
+            }
+        }
+
+        private void AddNewProduct_ProductAdded(object? sender, EventArgs e)
+        {
+            RefreshProductDataGrid();
+        }
+
+        private void Button12_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string supplierName = AddSupplier.Text;
+
+                if (string.IsNullOrEmpty(supplierName))
+                {
+                    MessageBox.Show("Please enter a supplier name.");
+                    return;
+                }
+
+                string query = "INSERT INTO Поставщик (Название) VALUES (@SupplierName)";
+
+                using (SqlCommand command = new SqlCommand(query, conn))
+                {
+                    command.Parameters.AddWithValue("@SupplierName", supplierName);
+
+                    // Закрываем DataReader, если он открыт
+                    if (reader != null && !reader.IsClosed)
+                    {
+                        reader.Close();
+                    }
+
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("New supplier added successfully.");
+                        RefreshSupplierDataGrid();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to add new supplier.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error adding new supplier: " + ex.Message);
+            }
+        }
+
+        private void RefreshSupplierDataGrid()
+        {
+            try
+            {
+                string query = "SELECT * FROM Поставщик";
+                ExecuteQueryAndRefreshDataGrid(query);
+
+            }
+            catch(Exception ex) 
+            {
+                MessageBox.Show("Error refreshing supplier data grid:" + ex.Message);
+            }
+        }
+
+        private void RefreshProductDataGrid()
+        {
+            // Выполняем запрос, чтобы получить обновленные данные
+            ExecuteQueryAndRefreshDataGrid("SELECT * FROM Товар");
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+           
+
+           
+            try
+            {
+                string tableName = GetSelectedTableName();
+                int selectedId = GetSelectedRowId(DataGrid1);
+
+                if (selectedId == -1)
+                {
+                    MessageBox.Show("No row selected.");
+                    return;
+                }
+
+                // Закрываем DataReader, если он открыт
+                if (reader != null && !reader.IsClosed)
+                {
+                    reader.Close();
+                }
+
+                if (tableName == "Товар")
+                {
+                    string query = "DELETE FROM Товар WHERE ТоварID = @ID";
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+                        command.Parameters.AddWithValue("@ID", selectedId);
+                        int rowsAffected = command.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Row deleted successfully.");
+                            RefreshDataGrid(tableName);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to delete row.");
+                        }
+                    }
+                }
+                else if (tableName == "Поставщик")
+                {
+                    string query = "DELETE FROM Поставщик WHERE ПоставщикID = @ID";
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+                        command.Parameters.AddWithValue("@ID", selectedId);
+                        int rowsAffected = command.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Row deleted successfully.");
+                            RefreshDataGrid(tableName);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to delete row.");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Unknown table name.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error deleting row: " + ex.Message);
+            }
+        }
+
+
+
+        private void RefreshDataGrid(string tableName)
+        {
+            try
+            {
+                string query = "SELECT *FROM " + tableName;
+                ExecuteQueryAndRefreshDataGrid(query);
+            }
+            catch(Exception ex) { MessageBox.Show("Error refreshing data grid:" + ex.Message);  }
+        }
+
+        private int GetSelectedRowId(DataGrid dataGrid)
+        {
+            if (dataGrid.SelectedItem != null)
+            {
+                DataRowView rowView = (DataRowView)dataGrid.SelectedItem;
+                if (currentTableName == "Товар")
+                {
+                    int selectedRowId = Convert.ToInt32(rowView["ТоварID"]);
+                    return selectedRowId;
+                }
+                else if (currentTableName == "Поставщик")
+                {
+                    int selectedRowId = Convert.ToInt32(rowView["ПоставщикID"]);
+                    return selectedRowId;
+                }
+                else
+                {
+                    throw new Exception("Unknown table name.");
+                }
+            }
+            else
+            {
+                return -1;
+               
+            }
+        }
+
+
+        private string GetSelectedTableName()
+        {
+            return currentTableName;
         }
     }
 }

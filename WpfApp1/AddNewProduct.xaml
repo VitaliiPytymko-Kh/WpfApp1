@@ -19,8 +19,7 @@
         <TextBlock Grid.Row="0" Text=" Product Name:"/>
         <TextBox   Grid.Row="1" x:Name="ProductNameTextBox"/>
         <TextBlock Grid.Row="2" Text=" Product Type:"/>
-        <ComboBox  Grid.Row="3" x:Name="ProductTypeComboBox"/>
-        <Button    Grid.Row="4" Content="Add New Type" Click="AddNewType_Click"/>
+        <ComboBox Grid.Row="3" x:Name="ProductTypeComboBox" DisplayMemberPath="Тип" />
         <Button    Grid.Row="5" Content="Add New Product" Click="AddNewProduct_Click"/>
     </Grid>
 </Window>
