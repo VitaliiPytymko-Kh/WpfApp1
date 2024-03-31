@@ -43,7 +43,7 @@ namespace WpfApp1
             try
             {
                 if (reader != null)
-                    reader.Close(); // Закрываем DataReader, если он открыт
+                    reader.Close(); 
 
                 TextBox1.Text = query;
 
@@ -85,7 +85,7 @@ namespace WpfApp1
             finally
             {
                 if (reader != null && !reader.IsClosed)
-                    reader.Close(); // Убеждаемся, что DataReader закрыт даже в случае исключения
+                    reader.Close(); 
             }
         }
 
@@ -178,22 +178,16 @@ namespace WpfApp1
         {
             try
             {
-               
-
-                // Получаем текст запроса из TextBox1
                 string query = TextBox1.Text;
 
-                // Проверяем, что запрос не пустой
                 if (string.IsNullOrEmpty(query))
                 {
                     System.Windows.MessageBox.Show("Enter a valid SQL query.");
                     return;
                 }
 
-                // Сохраняем результат предыдущего запроса
                 previousQueryResult = table;
 
-                // Выполняем запрос и обновляем DataGrid
                 ExecuteQueryAndRefreshDataGrid(query);
             }
             catch (Exception ex)
@@ -205,13 +199,10 @@ namespace WpfApp1
 
         private void Button2_Click(object sender, RoutedEventArgs e)
         {
-            // Очищаем DataGrid
             DataGrid1.ItemsSource = null;
 
-            // Восстанавливаем текст подсказки в TextBlock1
             TextBlock1.Text = "Enter your request";
 
-            // Отображение всей информации о товаре;
             ExecuteQueryAndRefreshDataGrid("SELECT * FROM Товар");
 
             currentTableName = "Товар";
@@ -228,22 +219,15 @@ namespace WpfApp1
 
         private void Button3_Click(object sender, RoutedEventArgs e)
         {
-            // Пример использования метода для выполнения запроса
             ExecuteQueryAndRefreshDataGrid("SELECT DISTINCT Тип FROM Товар");
         }
 
-
-
         private void Button4_Click(object sender, RoutedEventArgs e)
         {
-            // Отображение всех поставщиков
-            // Очищаем DataGrid
             DataGrid1.ItemsSource = null;
 
-            // Восстанавливаем текст подсказки в TextBlock1
             TextBlock1.Text = "Enter your request";
 
-            // Отображение всей информации о товаре;
             ExecuteQueryAndRefreshDataGrid("SELECT * FROM Поставщик");
 
             currentTableName = "Поставщик";
@@ -257,8 +241,7 @@ namespace WpfApp1
             }
           
         }
-           
-
+       
         private void Button5_Click(object sender, RoutedEventArgs e)
         {
             ShowProductWithMaxQuantity();
@@ -290,13 +273,10 @@ namespace WpfApp1
             window1.ShowDialog();
         }
 
-
         private void Button_Clear_Click(object sender, RoutedEventArgs e)
         {
-            // Очищаем поле запроса
-            TextBox1.Clear();
+           TextBox1.Clear();
 
-            // Если есть результат предыдущего запроса, отображаем его снова
             if (previousQueryResult != null)
             {
                 DataView Source = new DataView(previousQueryResult);
@@ -342,7 +322,6 @@ namespace WpfApp1
                 {
                     command.Parameters.AddWithValue("@SupplierName", supplierName);
 
-                    // Закрываем DataReader, если он открыт
                     if (reader != null && !reader.IsClosed)
                     {
                         reader.Close();
@@ -383,15 +362,11 @@ namespace WpfApp1
 
         private void RefreshProductDataGrid()
         {
-            // Выполняем запрос, чтобы получить обновленные данные
             ExecuteQueryAndRefreshDataGrid("SELECT * FROM Товар");
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-           
-
-           
             try
             {
                 string tableName = GetSelectedTableName();
@@ -457,7 +432,6 @@ namespace WpfApp1
         }
 
 
-
         private void RefreshDataGrid(string tableName)
         {
             try
@@ -494,7 +468,6 @@ namespace WpfApp1
                
             }
         }
-
 
         private string GetSelectedTableName()
         {
