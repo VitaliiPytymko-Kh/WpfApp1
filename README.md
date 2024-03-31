@@ -1,4 +1,8 @@
-![image](https://github.com/VitaliiPytymko-Kh/WpfApp1/assets/137927518/00fd6af5-ba87-4b10-9c4b-cbbb6bbcb7b4)
 
+![image](https://github.com/VitaliiPytymko-Kh/WpfApp1/assets/137927518/cb5ea95c-e119-423f-b125-9d26a9e2cb59)
 
-![image](https://github.com/VitaliiPytymko-Kh/WpfApp1/assets/137927518/c6e7c9ae-2acf-4af2-a3b9-41423d1948f4)
+![image](https://github.com/VitaliiPytymko-Kh/WpfApp1/assets/137927518/9bce11c9-1ff8-49be-8fa3-9b99ac75597e)
+
+![image](https://github.com/VitaliiPytymko-Kh/WpfApp1/assets/137927518/b275e090-558a-4a1d-a497-0aa3e9e2c464)
+
+![image](https://github.com/VitaliiPytymko-Kh/WpfApp1/assets/137927518/0ff35942-ba39-42d4-9acc-a410536a7a6b)
